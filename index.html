@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            padding: 0px;
+            margin: 0px;
+            background-image: linear-gradient(yellowgreen,skyblue,pink);
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; color: brown;">Promise,Async,Await</h1><hr>
+    <p>Q1.Write one example explaining how you can write a callback function.</p>
+    <pre>Ans:
+        function mainFunction(show) {
+            console.log(`I am a main function`);
+            let res = `I am a call back function`;
+            show(res);
+        }
+        
+        function callBackFunction(res) {
+            console.log(res;
+        }
+        mainFunction(callBackFunction);   
+    </pre><hr>
+    <pre>Q2."Write a callback function to print numbers from 1 to 7, in which 1 should be printed after 1 sec, 2 should be printed after 2 sec, 3 should be printed after 3 sec, and so on. 
+
+        Explain callback hell.
+        Numbers
+        1
+        2
+        3
+        4
+        5
+        6
+        7"</pre>
+        <pre>
+            Call back hell: Callback hell, also known as the pyramid of doom, is a
+            situation that arises when working with asynchronous JavaScript code
+            that involves multiple nested callbacks. It occurs when there are
+            numerous asynchronous operations or callbacks that depend on each other,
+            leading to deeply nested and indented code that becomes hard to read,
+            understand, and maintain.
+            
+ Sol:
+ function printNumberWithDelay(number, delay, callback) {
+    setTimeout(function () {
+        console.log(number);
+        callback();
+    }, delay * 1000);
+}
+
+function printNumbers() {
+    let counter = 1;
+
+    function printNextNumber() {
+        if (counter <= 7) {
+            printNumberWithDelay(counter, counter, function () {
+                counter++;
+                printNextNumber();
+            });
+        }
+    }
+
+    printNextNumber();
+}
+        </pre><hr>
+        <pre>
+            Q3."Write the promise function to print numbers from 1 to 7, in which 1 should be printed after 1 sec, 2 should be printed after 2 sec, 3 should be printed after 3 sec, and so on. 
+
+            Numbers
+            1
+            2
+            3
+            4
+            5
+            6
+            7"
+        </pre>
+        <pre>
+            Ans:
+            function delay(ms) {
+                return new Promise((resolve) => setTimeout(resolve, ms));
+            }
+            
+            function printNumbers() {
+                let promise = Promise.resolve();
+            
+                for (let number = 1; number <= 7; number++) {
+                    promise = promise
+                        .then(() => {
+                            console.log(number);
+                        })
+                        .then(() => delay(number * 1000));
+                }
+            }
+            
+            printNumbers();
+            
+        </pre><hr>
+        <p>Q4."Create a promise function accepting an argument, if yes is passed to the function then it should go to resolved state and print Promise Resolved, and if nothing is passed 
+            then it should go to reject the state and catch the error and print Promise Rejected "</p>
+            <pre>
+                function processPromise(input) {
+                    return new Promise((resolve, reject) => {
+                        if (input === 'yes') {
+                            resolve('Promise Resolved');
+                        } else {
+                            reject(new Error('Promise Rejected'));
+                        }
+                    });
+                }
+                
+                processPromise('yes')
+                    .then((result) => {
+                        console.log(result);
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+            </pre><hr>
+            <p>Q5.Create examples to explain callback function</p>
+            <pre>
+                function calculate(num1, num2) {
+                    return num1 + num2;
+                }
+                
+                function displayData(name, age) {
+                    console.log(`${name} : age is ${age}`);
+                }
+                
+                displayData('Anu', calculate(10, 12));
+            </pre><hr>
+            <p>Q6.Create examples to explain callback hell function</p>
+            <pre>
+                function doSomething(callback) {
+                    setTimeout(function () {
+                        const result = 'Result of doSomething';
+                        callback(result);
+                    }, 1000);
+                }
+                
+                function doSomethingElse(result, callback) {
+                    setTimeout(function () {
+                        const newResult = `New result based on ${result}`;
+                        callback(newResult);
+                    }, 2000);
+                }
+                
+                function doAnotherThing(newResult, callback) {
+                    setTimeout(function () {
+                        const finalResult = `Final result based on ${newResult}`;
+                        callback(finalResult);
+                    }, 3000);
+                }
+                
+                doSomething(function (result) {
+                    doSomethingElse(result, function (newResult) {
+                        doAnotherThing(newResult, function (finalResult) {
+                            console.log(finalResult);
+                        });
+                    });
+                });
+            </pre><hr>
+            <p>Q7.Create examples to explain promises function</p>
+            <pre>
+                function checkNumber(number) {
+                    return new Promise((resolve, reject) => {
+                        if (typeof number === 'number') {
+                            resolve('Valid number');
+                        } else {
+                            reject(new Error('Invalid number'));
+                        }
+                    });
+                }
+                
+                checkNumber(42)
+                    .then((result) => {
+                        console.log(result);
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+            </pre><hr>
+            <p>Q8.Create examples to explain async await function</p>
+            <pre>
+                function checkNumber(number) {
+                    return new Promise((resolve, reject) => {
+                        if (typeof number === 'number') {
+                            resolve('Valid number');
+                        } else {
+                            reject(new Error('Invalid number'));
+                        }
+                    });
+                }
+                
+                async function validateNumber() {
+                    try {
+                        const result = await checkNumber(42);
+                        console.log(result);
+                    } catch (error) {
+                        console.error(error);
+                    }
+                }
+                
+                validateNumber();
+            </pre><hr>
+            <p>Q9.Create examples to explain promise.all function</p>
+            <pre>
+                function asyncOperation1() {
+                    return new Promise((resolve) => {
+                        setTimeout(() => {
+                            resolve('Async operation 1 complete');
+                        }, 2000);
+                    });
+                }
+                
+                function asyncOperation2() {
+                    return new Promise((resolve) => {
+                        setTimeout(() => {
+                            resolve('Async operation 2 complete');
+                        }, 1500);
+                    });
+                }
+                
+                async function performAsyncOperations() {
+                    try {
+                        const results = await Promise.all([asyncOperation1(), asyncOperation2()]);
+                        console.log(results);
+                    } catch (error) {
+                        console.error(error);
+                    }
+                }
+                
+                performAsyncOperations();
+            </pre>
+        <script src="./index.js"></script>
+</body>
+</html>
